@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ai_tutorial_db
+    username: admin
+    password: admin888
+  jpa:
+    hibernate:
+      ddl-auto: update
