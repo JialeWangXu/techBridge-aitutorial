@@ -12,6 +12,25 @@ spring:
     type: none
   jackson:
     default-property-inclusion: NON_NULL
+  ai:
+    google:
+      genai:
+        api-key: ${GEMINI_API_KEY}
+        chat:
+          options:
+            model: gemini-2.5-flash
+  mail:
+    host: smtp.upm.es
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        from: ${MAIL_USERNAME}
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   security:
     oauth2:
       # 1. PARTE DE VALIDACIÓN (Resource Server)
@@ -70,3 +89,11 @@ feign:
       default:
         connectTimeout: 5000
         readTimeout: 5000
+
+app:
+  ai:
+    limits:
+      global-max: 3
+      global-warning: 2
+      user-max: 3
+      admin-email: "jiale.wang@alumnos.upm.es"
