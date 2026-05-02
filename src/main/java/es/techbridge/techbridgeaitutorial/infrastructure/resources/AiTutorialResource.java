@@ -9,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @Log4j2
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AiTutorialResource {
 
     public static final String AITUTORIAL = "/aitutorial";
+    public static final String ID = "/{id}";
 
     private final AiTutorialService aiTutorialService;
 
@@ -33,5 +33,11 @@ public class AiTutorialResource {
     public AiTutorial create(@AuthenticationPrincipal Jwt jwt, @RequestBody CreateAiTutorialDto createAiTutorialDto){
         String email = jwt.getSubject();
         return this.aiTutorialService.create(email,createAiTutorialDto);
+    }
+
+    @GetMapping(ID)
+    @PreAuthorize("hasAnyRole('SENIOR', 'VOLUNTEER')")
+    public AiTutorial getById(@PathVariable UUID id){
+        return this.aiTutorialService.getById(id);
     }
 }

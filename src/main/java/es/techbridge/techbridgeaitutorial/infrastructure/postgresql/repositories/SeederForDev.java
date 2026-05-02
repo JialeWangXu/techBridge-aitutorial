@@ -38,12 +38,15 @@ public class SeederForDev {
 
         AiTutorialEntity whatsapp = new AiTutorialEntity();
         whatsapp.setId(UUID.fromString("33333333-bbbb-cccc-dddd-eeeeffff0001"));
-        whatsapp.setTitle("Enviar fotos");
-        whatsapp.setGeneralDescription("Guía para WhatsApp");
+        whatsapp.setTitle("Videollamada con familiares");
+        whatsapp.setGeneralDescription("Quiero aprender a usar Zoom para hablar con mis nietos en el extranjero.");
         
         whatsapp.setSteps(List.of(
-                new Step(1, "Abre la app", "Icono verde"),
-                new Step(2, "Selecciona chat", null)
+                new Step(1, "Abre la app", "Icono Azul"),
+                new Step(2, "Elegir el botón de Entrar a una reunión", null),
+                new Step(3, "Introducir el ID de la reunión", null),
+                new Step(4, "Pulsar al botón de Entrar", null),
+                new Step(5, "Felicidades ya estás dentro de la reunión", null)
         ));
         this.aiTutorialRepository.save(whatsapp);
         

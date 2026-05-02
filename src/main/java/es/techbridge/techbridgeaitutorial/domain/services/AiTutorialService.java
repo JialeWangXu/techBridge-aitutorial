@@ -83,4 +83,8 @@ public class AiTutorialService {
             throw new FailedCreateAiTutorialException(errorMessage);
         }
     }
+
+    public AiTutorial getById(UUID id){
+        return this.aiTutorialPersistence.getById(id).toAiTutorial();
+    }
 }
