@@ -25,7 +25,9 @@ public class AiTutorialEntity extends BaseAuditEntity{
     @Id
     @Column(updatable = false, nullable = false, columnDefinition = "uuid")
     private UUID id;
+    @Column(columnDefinition = "TEXT")
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String generalDescription;
 
     @Column(columnDefinition = "TEXT")
