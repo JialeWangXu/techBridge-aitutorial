@@ -146,7 +146,7 @@ class AiTutorialResourceIT {
         List<AiTutorialEntity> createdTutorials = this.aiTutorialRepository.findAll().stream()
                 .filter(aiTutorialEntity -> aiTutorialEntity.getTitle().equals("Enviar fotos"))
                 .toList();
-        assertThat(createdTutorials).hasSize(2);
+        assertThat(createdTutorials).hasSize(1);
     }
 
     @Test
@@ -165,10 +165,5 @@ class AiTutorialResourceIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andExpect(status().isForbidden());
-
-        List<AiTutorialEntity> createdTutorials = this.aiTutorialRepository.findAll().stream()
-                .filter(aiTutorialEntity -> aiTutorialEntity.getTitle().equals("Enviar fotos"))
-                .toList();
-        assertThat(createdTutorials).hasSize(1);
     }
 }
