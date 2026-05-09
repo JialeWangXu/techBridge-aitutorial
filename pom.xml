@@ -10,7 +10,7 @@
     </parent>
     <groupId>es.techbridge</groupId>
     <artifactId>techbridge-aitutorial</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.2-SNAPSHOT</version>
     <name>techbridge-aitutorial</name>
     <description>techbridge-aitutorial</description>
     <url/>
@@ -48,11 +48,7 @@
         <sonar.coverage.exclusions>
             **/TechbridgeAitutorialApplication.java,
             **/configurations/**,
-            **/domain/exceptions/**,
-            **/domain/mapper/**,
-            **/domain/model/**,
-            **/domain/persistence/**,
-            **/domain/webclients/**,
+            **/domain/**,
             **/infrastructure/postgresql/**
         </sonar.coverage.exclusions>
 

@@ -1,5 +1,6 @@
 package es.techbridge.techbridgeaitutorial.domain.services;
 
+import es.techbridge.techbridgeaitutorial.application.services.UserDailyAiLimitService;
 import es.techbridge.techbridgeaitutorial.domain.exceptions.UserQuotaExceededException;
 import es.techbridge.techbridgeaitutorial.domain.model.UserDailyAiLimit;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.UserDailyAiLimitEntity;

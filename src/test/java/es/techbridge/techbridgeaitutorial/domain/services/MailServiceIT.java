@@ -1,5 +1,6 @@
 package es.techbridge.techbridgeaitutorial.domain.services;
 
+import es.techbridge.techbridgeaitutorial.application.services.MailService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
