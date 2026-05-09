@@ -1,4 +1,4 @@
-package es.techbridge.techbridgeaitutorial.domain.webclients;
+package es.techbridge.techbridgeaitutorial.application.port.out.webclients;
 
 import es.techbridge.techbridgeaitutorial.configurations.FeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;

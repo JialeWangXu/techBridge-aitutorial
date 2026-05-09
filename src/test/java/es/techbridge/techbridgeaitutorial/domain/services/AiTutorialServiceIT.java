@@ -1,11 +1,12 @@
 package es.techbridge.techbridgeaitutorial.domain.services;
 
+import es.techbridge.techbridgeaitutorial.application.services.AiTutorialService;
 import es.techbridge.techbridgeaitutorial.domain.exceptions.FailedCreateAiTutorialException;
 import es.techbridge.techbridgeaitutorial.domain.model.AiTutorial;
 import es.techbridge.techbridgeaitutorial.domain.model.CreateAiTutorialDto;
 import es.techbridge.techbridgeaitutorial.domain.model.Step;
-import es.techbridge.techbridgeaitutorial.domain.webclients.HelpRequestWebClient;
-import es.techbridge.techbridgeaitutorial.domain.webclients.UserWebClient;
+import es.techbridge.techbridgeaitutorial.application.port.out.webclients.HelpRequestWebClient;
+import es.techbridge.techbridgeaitutorial.application.port.out.webclients.UserWebClient;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.GlobalAiLimitEntity;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.UserDailyAiLimitEntity;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.repositories.AiTutorialRepository;

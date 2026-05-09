@@ -1,8 +1,10 @@
-package es.techbridge.techbridgeaitutorial.domain.services;
+package es.techbridge.techbridgeaitutorial.application.services;
 
+import es.techbridge.techbridgeaitutorial.application.port.in.GlobalAiLimitUseCases;
+import es.techbridge.techbridgeaitutorial.application.port.in.MailUseCases;
 import es.techbridge.techbridgeaitutorial.domain.exceptions.GlobalQuotaExceededException;
 import es.techbridge.techbridgeaitutorial.domain.model.GlobalAiLimit;
-import es.techbridge.techbridgeaitutorial.domain.persistence.GlobalAiLimitPersistence;
+import es.techbridge.techbridgeaitutorial.application.port.out.persistence.GlobalAiLimitPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 @Service
-public class GlobalAiLimitService {
+public class GlobalAiLimitService implements GlobalAiLimitUseCases {
 
     private final GlobalAiLimitPersistence globalAiLimitPersistence;
-    private final MailService mailService;
+    private final MailUseCases mailService;
     @Value("${app.ai.limits.global-warning}")
     private int globalWarningThreshold;
 

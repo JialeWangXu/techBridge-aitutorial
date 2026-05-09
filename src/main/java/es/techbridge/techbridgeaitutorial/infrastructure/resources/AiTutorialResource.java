@@ -1,9 +1,10 @@
 package es.techbridge.techbridgeaitutorial.infrastructure.resources;
 
 
+import es.techbridge.techbridgeaitutorial.application.port.in.AiTutorialUseCases;
 import es.techbridge.techbridgeaitutorial.domain.model.AiTutorial;
 import es.techbridge.techbridgeaitutorial.domain.model.CreateAiTutorialDto;
-import es.techbridge.techbridgeaitutorial.domain.services.AiTutorialService;
+import es.techbridge.techbridgeaitutorial.application.services.AiTutorialService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,10 +22,10 @@ public class AiTutorialResource {
     public static final String AITUTORIAL = "/aitutorial";
     public static final String ID = "/{id}";
 
-    private final AiTutorialService aiTutorialService;
+    private final AiTutorialUseCases aiTutorialService;
 
     @Autowired
-    public AiTutorialResource(AiTutorialService aiTutorialService) {
+    public AiTutorialResource(AiTutorialUseCases aiTutorialService) {
         this.aiTutorialService = aiTutorialService;
     }
 

@@ -1,6 +1,6 @@
 package es.techbridge.techbridgeaitutorial.infrastructure.postgresql.persistence;
 
-import es.techbridge.techbridgeaitutorial.domain.persistence.GlobalAiLimitPersistence;
+import es.techbridge.techbridgeaitutorial.application.port.out.persistence.GlobalAiLimitPersistence;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.GlobalAiLimitEntity;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.repositories.GlobalAiLimitRepository;
 import org.springframework.beans.factory.annotation.Autowired;

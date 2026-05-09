@@ -1,4 +1,4 @@
-package es.techbridge.techbridgeaitutorial.domain.persistence;
+package es.techbridge.techbridgeaitutorial.application.port.out.persistence;
 
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.UserDailyAiLimitEntity;
 

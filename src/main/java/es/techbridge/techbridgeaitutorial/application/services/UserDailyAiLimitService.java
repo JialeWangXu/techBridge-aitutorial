@@ -1,15 +1,16 @@
-package es.techbridge.techbridgeaitutorial.domain.services;
+package es.techbridge.techbridgeaitutorial.application.services;
 
+import es.techbridge.techbridgeaitutorial.application.port.in.UserDailyAiLimitUseCases;
 import es.techbridge.techbridgeaitutorial.domain.exceptions.UserQuotaExceededException;
 import es.techbridge.techbridgeaitutorial.domain.model.UserDailyAiLimit;
-import es.techbridge.techbridgeaitutorial.domain.persistence.UserDailyAiLimitPersistence;
+import es.techbridge.techbridgeaitutorial.application.port.out.persistence.UserDailyAiLimitPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-public class UserDailyAiLimitService {
+public class UserDailyAiLimitService implements UserDailyAiLimitUseCases {
 
     private final UserDailyAiLimitPersistence userDailyAiLimitPersistence;
 

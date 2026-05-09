@@ -1,11 +1,12 @@
 package es.techbridge.techbridgeaitutorial.domain.services;
 
+import es.techbridge.techbridgeaitutorial.application.services.GlobalAiLimitService;
+import es.techbridge.techbridgeaitutorial.application.services.MailService;
 import es.techbridge.techbridgeaitutorial.domain.exceptions.GlobalQuotaExceededException;
 import es.techbridge.techbridgeaitutorial.domain.model.GlobalAiLimit;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.GlobalAiLimitEntity;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.repositories.GlobalAiLimitRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
