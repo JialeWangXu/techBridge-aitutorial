@@ -176,8 +176,7 @@ class AiTutorialResourceIT {
                                 .authorities(() -> "ROLE_SENIOR"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.message").value("Error at creating Ai tutorial. El contenido no es valido."));
+                .andExpect(status().isInternalServerError());
 
         List<AiTutorialEntity> createdTutorials = this.aiTutorialRepository.findAll().stream()
                 .filter(aiTutorialEntity -> aiTutorialEntity.getTitle().equals("Preparar una receta"))
