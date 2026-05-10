@@ -1,6 +1,6 @@
 package es.techbridge.techbridgeaitutorial.infrastructure.postgresql.repositories;
 
-import es.techbridge.techbridgeaitutorial.domain.model.Step;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.Step;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.AiTutorialEntity;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.GlobalAiLimitEntity;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.UserDailyAiLimitEntity;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 @Log4j2

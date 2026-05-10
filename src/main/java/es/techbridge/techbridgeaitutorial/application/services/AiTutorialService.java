@@ -6,8 +6,8 @@ import es.techbridge.techbridgeaitutorial.application.port.in.UserDailyAiLimitUs
 import es.techbridge.techbridgeaitutorial.application.port.out.aiModel.AiModelFacade;
 import es.techbridge.techbridgeaitutorial.domain.exceptions.FailedCreateAiTutorialException;
 import es.techbridge.techbridgeaitutorial.application.port.out.webclients.UserWebClient;
-import es.techbridge.techbridgeaitutorial.domain.model.AiTutorial;
-import es.techbridge.techbridgeaitutorial.domain.model.CreateAiTutorialDto;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.AiTutorial;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.CreateAiTutorialDto;
 import es.techbridge.techbridgeaitutorial.application.port.out.persistence.AiTutorialPersistence;
 import es.techbridge.techbridgeaitutorial.application.port.out.webclients.HelpRequestWebClient;
 import org.springframework.beans.factory.annotation.Autowired;

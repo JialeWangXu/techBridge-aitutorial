@@ -1,6 +1,6 @@
 package es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities;
 
-import es.techbridge.techbridgeaitutorial.domain.model.UserDailyAiLimit;
+import es.techbridge.techbridgeaitutorial.domain.model.aiLimit.UserDailyAiLimit;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

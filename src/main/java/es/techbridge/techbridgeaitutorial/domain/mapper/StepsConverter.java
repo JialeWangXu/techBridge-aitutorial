@@ -3,7 +3,7 @@ package es.techbridge.techbridgeaitutorial.domain.mapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import es.techbridge.techbridgeaitutorial.domain.model.Step;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.Step;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

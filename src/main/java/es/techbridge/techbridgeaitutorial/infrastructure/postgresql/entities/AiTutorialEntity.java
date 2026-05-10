@@ -1,8 +1,8 @@
 package es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities;
 
 import es.techbridge.techbridgeaitutorial.domain.mapper.StepsConverter;
-import es.techbridge.techbridgeaitutorial.domain.model.AiTutorial;
-import es.techbridge.techbridgeaitutorial.domain.model.Step;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.AiTutorial;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.Step;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

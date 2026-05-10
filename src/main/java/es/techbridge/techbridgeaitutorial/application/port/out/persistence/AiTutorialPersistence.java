@@ -1,6 +1,6 @@
 package es.techbridge.techbridgeaitutorial.application.port.out.persistence;
 
-import es.techbridge.techbridgeaitutorial.domain.model.AiTutorial;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.AiTutorial;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.AiTutorialEntity;
 import java.util.UUID;
 
