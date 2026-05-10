@@ -2,8 +2,8 @@ package es.techbridge.techbridgeaitutorial.infrastructure.aiModel;
 
 import es.techbridge.techbridgeaitutorial.application.port.out.aiModel.AiModelFacade;
 import es.techbridge.techbridgeaitutorial.domain.exceptions.NotFoundException;
-import es.techbridge.techbridgeaitutorial.domain.model.AiTutorial;
-import es.techbridge.techbridgeaitutorial.domain.model.CreateAiTutorialDto;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.AiTutorial;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.CreateAiTutorialDto;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;

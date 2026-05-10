@@ -1,14 +1,18 @@
 package es.techbridge.techbridgeaitutorial.domain.services;
 
+import es.techbridge.techbridgeaitutorial.application.port.out.webclients.UserWebClient;
 import es.techbridge.techbridgeaitutorial.application.services.UserDailyAiLimitService;
 import es.techbridge.techbridgeaitutorial.domain.exceptions.UserQuotaExceededException;
-import es.techbridge.techbridgeaitutorial.domain.model.UserDailyAiLimit;
+import es.techbridge.techbridgeaitutorial.domain.model.aiLimit.UserDailyAiLimit;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.UserDailyAiLimitEntity;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.repositories.UserDailyAiLimitRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -24,12 +28,22 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class UserDailyAiLimitServiceIT {
 
     private static final UUID SENIOR_ID = UUID.fromString("11111111-1111-1111-1111-111111111111");
+    private static final String SENIOR_EMAIL = "manolo@gmail.com";
 
     @Autowired
     private UserDailyAiLimitService userDailyAiLimitService;
 
     @Autowired
     private UserDailyAiLimitRepository userDailyAiLimitRepository;
+
+    @MockitoBean
+    private UserWebClient userWebClient;
+
+    @BeforeEach
+    void setUp(){
+        BDDMockito.given(this.userWebClient.getIdByEmail(SENIOR_EMAIL))
+                .willReturn(SENIOR_ID);
+    }
 
     @Test
     void getByUserId() {
@@ -79,5 +93,12 @@ class UserDailyAiLimitServiceIT {
                     assertThat(entity.getCallsToday()).isEqualTo(1);
                     assertThat(entity.getLastCallDate()).isEqualTo(LocalDate.now(ZoneId.of("UTC")));
                 });
+    }
+
+    @Test
+    void checkAiLimit(){
+        var result = this.userDailyAiLimitService.checkAiLimit(SENIOR_EMAIL);
+        assertThat(result.isGlobalLimitReached()).isFalse();
+        assertThat(result.getUserLimitRemaining()).isGreaterThanOrEqualTo(0);
     }
 }

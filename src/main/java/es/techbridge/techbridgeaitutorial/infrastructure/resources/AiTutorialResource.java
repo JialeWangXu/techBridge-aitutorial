@@ -2,9 +2,10 @@ package es.techbridge.techbridgeaitutorial.infrastructure.resources;
 
 
 import es.techbridge.techbridgeaitutorial.application.port.in.AiTutorialUseCases;
-import es.techbridge.techbridgeaitutorial.domain.model.AiTutorial;
-import es.techbridge.techbridgeaitutorial.domain.model.CreateAiTutorialDto;
-import es.techbridge.techbridgeaitutorial.application.services.AiTutorialService;
+import es.techbridge.techbridgeaitutorial.application.port.in.UserDailyAiLimitUseCases;
+import es.techbridge.techbridgeaitutorial.domain.model.aiLimit.AiLimitCheck;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.AiTutorial;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.CreateAiTutorialDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,12 +22,15 @@ public class AiTutorialResource {
 
     public static final String AITUTORIAL = "/aitutorial";
     public static final String ID = "/{id}";
+    public static final String CHECK = "/check";
 
     private final AiTutorialUseCases aiTutorialService;
+    private final UserDailyAiLimitUseCases userDailyAiLimitUseCases;
 
     @Autowired
-    public AiTutorialResource(AiTutorialUseCases aiTutorialService) {
+    public AiTutorialResource(AiTutorialUseCases aiTutorialService, UserDailyAiLimitUseCases userDailyAiLimitUseCases) {
         this.aiTutorialService = aiTutorialService;
+        this.userDailyAiLimitUseCases = userDailyAiLimitUseCases;
     }
 
     @PostMapping
@@ -40,5 +44,11 @@ public class AiTutorialResource {
     @PreAuthorize("hasAnyRole('SENIOR', 'VOLUNTEER')")
     public AiTutorial getById(@PathVariable UUID id){
         return this.aiTutorialService.getById(id);
+    }
+
+    @GetMapping(CHECK)
+    @PreAuthorize("hasRole('SENIOR')")
+    public AiLimitCheck aiLimitCheck(@AuthenticationPrincipal Jwt jwt){
+        return this.userDailyAiLimitUseCases.checkAiLimit(jwt.getSubject());
     }
 }

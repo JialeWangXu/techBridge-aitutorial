@@ -1,4 +1,4 @@
-package es.techbridge.techbridgeaitutorial.domain.model;
+package es.techbridge.techbridgeaitutorial.domain.model.aiLimit;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

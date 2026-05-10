@@ -1,7 +1,7 @@
 package es.techbridge.techbridgeaitutorial.infrastructure.resource;
 
-import es.techbridge.techbridgeaitutorial.domain.model.AiTutorial;
-import es.techbridge.techbridgeaitutorial.domain.model.Step;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.AiTutorial;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.Step;
 import es.techbridge.techbridgeaitutorial.application.port.out.webclients.HelpRequestWebClient;
 import es.techbridge.techbridgeaitutorial.application.port.out.webclients.UserWebClient;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.AiTutorialEntity;
@@ -32,6 +32,7 @@ import java.util.function.Consumer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -165,5 +166,15 @@ class AiTutorialResourceIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonBody))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void whenGetAiLimit_thenReturnResult() throws Exception {
+        this.mockMvc.perform(get(AiTutorialResource.AITUTORIAL+AiTutorialResource.CHECK)
+                .with(jwt().jwt(jwt-> jwt.subject(SENIOR_EMAIL))
+                        .authorities(() -> "ROLE_SENIOR"))
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("$.globalLimitReached").value(false));
+
     }
 }

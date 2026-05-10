@@ -3,7 +3,7 @@ package es.techbridge.techbridgeaitutorial.domain.services;
 import es.techbridge.techbridgeaitutorial.application.services.GlobalAiLimitService;
 import es.techbridge.techbridgeaitutorial.application.services.MailService;
 import es.techbridge.techbridgeaitutorial.domain.exceptions.GlobalQuotaExceededException;
-import es.techbridge.techbridgeaitutorial.domain.model.GlobalAiLimit;
+import es.techbridge.techbridgeaitutorial.domain.model.aiLimit.GlobalAiLimit;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.GlobalAiLimitEntity;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.repositories.GlobalAiLimitRepository;
 import org.junit.jupiter.api.Test;
@@ -97,5 +97,11 @@ class GlobalAiLimitServiceIT {
                 .get()
                 .extracting(GlobalAiLimitEntity::getTotalCalls)
                 .isEqualTo(2);
+    }
+
+    @Test
+    void checkIfGlobalLimitReached() {
+        var resul = this.globalAiLimitService.getIfGlobalLimitReached();
+        assertThat(resul).isFalse();
     }
 }

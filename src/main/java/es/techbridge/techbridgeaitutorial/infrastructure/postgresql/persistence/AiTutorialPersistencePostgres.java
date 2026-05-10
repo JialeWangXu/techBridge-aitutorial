@@ -1,7 +1,7 @@
 package es.techbridge.techbridgeaitutorial.infrastructure.postgresql.persistence;
 
 import es.techbridge.techbridgeaitutorial.domain.exceptions.NotFoundException;
-import es.techbridge.techbridgeaitutorial.domain.model.AiTutorial;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.AiTutorial;
 import es.techbridge.techbridgeaitutorial.application.port.out.persistence.AiTutorialPersistence;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.entities.AiTutorialEntity;
 import es.techbridge.techbridgeaitutorial.infrastructure.postgresql.repositories.AiTutorialRepository;
