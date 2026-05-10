@@ -1,9 +1,11 @@
 package es.techbridge.techbridgeaitutorial.domain.services;
 
-import es.techbridge.techbridgeaitutorial.application.services.AiTutorialService;
+import es.techbridge.techbridgeaitutorial.application.port.out.aiModel.AiModelFacade;
+import es.techbridge.techbridgeaitutorial.application.services.AiService;
 import es.techbridge.techbridgeaitutorial.domain.exceptions.FailedCreateAiTutorialException;
 import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.AiTutorial;
 import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.CreateAiTutorialDto;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.RequestContentValidation;
 import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.Step;
 import es.techbridge.techbridgeaitutorial.application.port.out.webclients.HelpRequestWebClient;
 import es.techbridge.techbridgeaitutorial.application.port.out.webclients.UserWebClient;
@@ -43,14 +45,14 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest(properties = "management.health.mail.enabled=false")
 @Transactional
 @ActiveProfiles("test")
-class AiTutorialServiceIT {
+class AiServiceIT {
 
     private static final UUID SENIOR_ID = UUID.fromString("11111111-1111-1111-1111-111111111111");
     private static final UUID HELP_REQUEST_ID = UUID.fromString("11111111-2222-3333-4444-555566660001");
     private static final String SENIOR_EMAIL = "manolo@gmail.com";
 
     @Autowired
-    private AiTutorialService aiTutorialService;
+    private AiService aiService;
 
     @Autowired
     private AiTutorialRepository aiTutorialRepository;
@@ -61,17 +63,8 @@ class AiTutorialServiceIT {
     @Autowired
     private UserDailyAiLimitRepository userDailyAiLimitRepository;
 
-    @Autowired
-    private ChatClient.Builder builder;
-
-    @Autowired
-    private ChatClient chatClient;
-
-    @Autowired
-    private ChatClient.ChatClientRequestSpec requestSpec;
-
-    @Autowired
-    private ChatClient.CallResponseSpec callResponseSpec;
+    @MockitoBean
+    private AiModelFacade aiModelFacade;
 
     @MockitoBean
     private HelpRequestWebClient helpRequestWebClient;
@@ -84,13 +77,6 @@ class AiTutorialServiceIT {
 
     @BeforeEach
     void setUp() {
-        Mockito.reset(this.chatClient, this.requestSpec, this.callResponseSpec, this.helpRequestWebClient, this.userWebClient);
-        BDDMockito.given(this.chatClient.prompt())
-                .willReturn(this.requestSpec);
-        BDDMockito.given(this.requestSpec.system(any(Consumer.class)))
-                .willReturn(this.requestSpec);
-        BDDMockito.given(this.requestSpec.call())
-                .willReturn(this.callResponseSpec);
         BDDMockito.given(this.userWebClient.getIdByEmail(SENIOR_EMAIL))
                 .willReturn(SENIOR_ID);
     }
@@ -133,7 +119,7 @@ class AiTutorialServiceIT {
                         new Step(2, "Selecciona chat", null)
                 ))
                 .build();
-        BDDMockito.given(this.callResponseSpec.entity(AiTutorial.class))
+        BDDMockito.given(this.aiModelFacade.generateAiTutorial(any(CreateAiTutorialDto.class)))
                 .willReturn(aiTutorial);
         CreateAiTutorialDto createAiTutorialDto = CreateAiTutorialDto.builder()
                 .title("Enviar fotos")
@@ -141,7 +127,7 @@ class AiTutorialServiceIT {
                 .helpRequestId(HELP_REQUEST_ID)
                 .build();
 
-        AiTutorial result = this.aiTutorialService.create(SENIOR_EMAIL, createAiTutorialDto);
+        AiTutorial result = this.aiService.create(SENIOR_EMAIL, createAiTutorialDto);
 
         assertThat(result).isNotNull();
         assertThat(result.getId()).isNotNull();
@@ -173,18 +159,39 @@ class AiTutorialServiceIT {
 
     @Test
     void createWhenChatClientReturnsNull_thenThrowFailedCreateAiTutorialException() {
-        BDDMockito.given(this.callResponseSpec.entity(AiTutorial.class))
-                .willReturn(null);
         CreateAiTutorialDto createAiTutorialDto = CreateAiTutorialDto.builder()
                 .title("Enviar fotos")
                 .description("Guia para WhatsApp")
                 .helpRequestId(HELP_REQUEST_ID)
                 .build();
 
-        assertThatThrownBy(() -> this.aiTutorialService.create(SENIOR_EMAIL, createAiTutorialDto))
+        assertThatThrownBy(() -> this.aiService.create(SENIOR_EMAIL, createAiTutorialDto))
                 .isInstanceOf(FailedCreateAiTutorialException.class)
                 .hasMessageContaining(HELP_REQUEST_ID.toString());
 
         verify(this.helpRequestWebClient, never()).saveAiTutorialId(any(UUID.class), any(UUID.class));
     }
+
+    @Test
+    void requestContentValidation() {
+        CreateAiTutorialDto createAiTutorialDto = CreateAiTutorialDto.builder()
+                .title("Enviar fotos")
+                .description("Guia para WhatsApp")
+                .helpRequestId(HELP_REQUEST_ID)
+                .build();
+        RequestContentValidation expectedValidation = RequestContentValidation.builder()
+                .valid(true)
+                .reason("Solicitud relacionada con tecnologia")
+                .build();
+        BDDMockito.given(this.aiModelFacade.requestContentValidation(createAiTutorialDto))
+                .willReturn(expectedValidation);
+
+        RequestContentValidation result = this.aiService.requestContentValidation(createAiTutorialDto);
+
+        assertThat(result).isNotNull();
+        assertThat(result.isValid()).isTrue();
+        assertThat(result.getReason()).isEqualTo("Solicitud relacionada con tecnologia");
+        verify(this.aiModelFacade).requestContentValidation(createAiTutorialDto);
+    }
+
 }

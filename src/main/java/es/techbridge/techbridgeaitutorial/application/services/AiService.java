@@ -1,6 +1,6 @@
 package es.techbridge.techbridgeaitutorial.application.services;
 
-import es.techbridge.techbridgeaitutorial.application.port.in.AiTutorialUseCases;
+import es.techbridge.techbridgeaitutorial.application.port.in.AiUseCases;
 import es.techbridge.techbridgeaitutorial.application.port.in.GlobalAiLimitUseCases;
 import es.techbridge.techbridgeaitutorial.application.port.in.UserDailyAiLimitUseCases;
 import es.techbridge.techbridgeaitutorial.application.port.out.aiModel.AiModelFacade;
@@ -10,13 +10,14 @@ import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.AiTutorial;
 import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.CreateAiTutorialDto;
 import es.techbridge.techbridgeaitutorial.application.port.out.persistence.AiTutorialPersistence;
 import es.techbridge.techbridgeaitutorial.application.port.out.webclients.HelpRequestWebClient;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.RequestContentValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-public class AiTutorialService implements AiTutorialUseCases {
+public class AiService implements AiUseCases {
 
     private final AiTutorialPersistence aiTutorialPersistence;
     private final HelpRequestWebClient helpRequestWebClient;
@@ -26,11 +27,11 @@ public class AiTutorialService implements AiTutorialUseCases {
     private final AiModelFacade aiModelFacade;
 
     @Autowired
-    public AiTutorialService(AiTutorialPersistence aiTutorialPersistence,
-                             HelpRequestWebClient helpRequestWebClient,
-                             GlobalAiLimitUseCases globalAiLimitUseCases,
-                             UserDailyAiLimitUseCases userDailyAiLimitUseCases,
-                             UserWebClient userWebClient, AiModelFacade aiModelFacade) {
+    public AiService(AiTutorialPersistence aiTutorialPersistence,
+                     HelpRequestWebClient helpRequestWebClient,
+                     GlobalAiLimitUseCases globalAiLimitUseCases,
+                     UserDailyAiLimitUseCases userDailyAiLimitUseCases,
+                     UserWebClient userWebClient, AiModelFacade aiModelFacade) {
         this.aiTutorialPersistence = aiTutorialPersistence;
         this.helpRequestWebClient = helpRequestWebClient;
         this.globalAiLimitUseCases = globalAiLimitUseCases;
@@ -45,8 +46,16 @@ public class AiTutorialService implements AiTutorialUseCases {
         // Ai usage limit controls
         this.globalAiLimitUseCases.checkGlobalAiLimit();
         this.userDailyAiLimitUseCases.checkUserAiLimit(userId);
-        AiTutorial tutorial = this.aiModelFacade.generateAiTutorial(email,aiTutorial);
-
+        AiTutorial tutorial;
+        try {
+             tutorial= this.aiModelFacade.generateAiTutorial(aiTutorial);
+        } catch (Exception e) {
+            if(e.getMessage().contains("El contenido no es valido.")){
+                this.userDailyAiLimitUseCases.incrementUserDailyTotalCalls(userId);
+            }
+            String errorMessage = "HelpRequest Id: "+aiTutorial.getHelpRequestId();
+            throw new FailedCreateAiTutorialException(errorMessage);
+        }
         if(tutorial!=null){
             tutorial.setId(UUID.randomUUID());
             AiTutorial result = this.aiTutorialPersistence.create(tutorial).toAiTutorial();
@@ -62,5 +71,10 @@ public class AiTutorialService implements AiTutorialUseCases {
 
     public AiTutorial getById(UUID id){
         return this.aiTutorialPersistence.getById(id).toAiTutorial();
+    }
+
+    @Override
+    public RequestContentValidation requestContentValidation(CreateAiTutorialDto request) {
+        return this.aiModelFacade.requestContentValidation(request);
     }
 }

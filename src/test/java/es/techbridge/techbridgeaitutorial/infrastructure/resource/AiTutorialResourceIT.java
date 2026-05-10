@@ -1,6 +1,7 @@
 package es.techbridge.techbridgeaitutorial.infrastructure.resource;
 
 import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.AiTutorial;
+import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.RequestContentValidation;
 import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.Step;
 import es.techbridge.techbridgeaitutorial.application.port.out.webclients.HelpRequestWebClient;
 import es.techbridge.techbridgeaitutorial.application.port.out.webclients.UserWebClient;
@@ -85,6 +86,11 @@ class AiTutorialResourceIT {
                 .willReturn(this.callResponseSpec);
         BDDMockito.given(this.userWebClient.getIdByEmail(SENIOR_EMAIL))
                 .willReturn(SENIOR_ID);
+        BDDMockito.given(this.callResponseSpec.entity(RequestContentValidation.class))
+                .willReturn(RequestContentValidation.builder()
+                        .valid(true)
+                        .reason("Solicitud relacionada con tecnologia")
+                        .build());
         BDDMockito.given(this.callResponseSpec.entity(AiTutorial.class))
                 .willReturn(AiTutorial.builder()
                         .title("Enviar fotos")
@@ -148,6 +154,35 @@ class AiTutorialResourceIT {
                 .filter(aiTutorialEntity -> aiTutorialEntity.getTitle().equals("Enviar fotos"))
                 .toList();
         assertThat(createdTutorials).hasSize(1);
+    }
+
+    @Test
+    void whenCreateAiTutorialWithInvalidContent_thenReturns500AndDoesNotPersist() throws Exception {
+        BDDMockito.given(this.callResponseSpec.entity(RequestContentValidation.class))
+                .willReturn(RequestContentValidation.builder()
+                        .valid(false)
+                        .reason("Solicitud no relacionada con tecnologia")
+                        .build());
+        String jsonBody = """
+            {
+              "title": "Preparar una receta",
+              "description": "Quiero ayuda para cocinar una tortilla",
+              "helpRequestId": "11111111-2222-3333-4444-555566660001"
+            }
+            """;
+
+        this.mockMvc.perform(post(AiTutorialResource.AITUTORIAL)
+                        .with(jwt().jwt(jwt -> jwt.subject(SENIOR_EMAIL))
+                                .authorities(() -> "ROLE_SENIOR"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonBody))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.message").value("Error at creating Ai tutorial. El contenido no es valido."));
+
+        List<AiTutorialEntity> createdTutorials = this.aiTutorialRepository.findAll().stream()
+                .filter(aiTutorialEntity -> aiTutorialEntity.getTitle().equals("Preparar una receta"))
+                .toList();
+        assertThat(createdTutorials).isEmpty();
     }
 
     @Test

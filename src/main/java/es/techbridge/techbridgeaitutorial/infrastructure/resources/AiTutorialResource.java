@@ -1,7 +1,7 @@
 package es.techbridge.techbridgeaitutorial.infrastructure.resources;
 
 
-import es.techbridge.techbridgeaitutorial.application.port.in.AiTutorialUseCases;
+import es.techbridge.techbridgeaitutorial.application.port.in.AiUseCases;
 import es.techbridge.techbridgeaitutorial.application.port.in.UserDailyAiLimitUseCases;
 import es.techbridge.techbridgeaitutorial.domain.model.aiLimit.AiLimitCheck;
 import es.techbridge.techbridgeaitutorial.domain.model.aiTutorial.AiTutorial;
@@ -24,11 +24,11 @@ public class AiTutorialResource {
     public static final String ID = "/{id}";
     public static final String CHECK = "/check";
 
-    private final AiTutorialUseCases aiTutorialService;
+    private final AiUseCases aiTutorialService;
     private final UserDailyAiLimitUseCases userDailyAiLimitUseCases;
 
     @Autowired
-    public AiTutorialResource(AiTutorialUseCases aiTutorialService, UserDailyAiLimitUseCases userDailyAiLimitUseCases) {
+    public AiTutorialResource(AiUseCases aiTutorialService, UserDailyAiLimitUseCases userDailyAiLimitUseCases) {
         this.aiTutorialService = aiTutorialService;
         this.userDailyAiLimitUseCases = userDailyAiLimitUseCases;
     }
