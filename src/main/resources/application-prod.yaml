@@ -8,6 +8,15 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${JWK_SET_URI}
+      client:
+        provider:
+          internal-provider:
+            token-uri: ${TOKEN_URI}
 
 eureka:
   client:
